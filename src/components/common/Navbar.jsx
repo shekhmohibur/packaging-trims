@@ -290,7 +290,6 @@ const Navbar = () => {
                 )}
 
               </div>
-
             </div>
           </motion.div>
 
