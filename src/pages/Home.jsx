@@ -13,28 +13,47 @@ import ContactSection from "./home/ContactSection";
 
 const Home = () => {
   return (
-    <div>
-      {/* Hero Section */}
-      <Hero />
-      {/* Stats Card */}
-      <AboutSection/>
-      {/* Production Process */}
-      <ProductionProcess/>
-      {/* Products Section */}
-      <ProductsSection/>
-      {/* Sustainability Section */}
-      <SustainabilitySection/>
-      {/* Industries Section */}
-      <IndustriesSection/>
-      {/* Gallery Section */}
-      <GallerySection/>
-      {/* Trusted Clients */}
-      <TrustedClients/>
-      {/* FAQ Section */}
-      <FAQSection/>
-      {/* Contact Section */}
-      <ContactSection/>
-    </div>
+    <>
+      <section id="hero">
+        <Hero />
+      </section>
+
+      <section id="about">
+        <AboutSection />
+      </section>
+
+      <section id="manufacturing">
+        <ProductionProcess />
+      </section>
+
+      <section id="products">
+        <ProductsSection />
+      </section>
+
+      <section id="sustainability">
+        <SustainabilitySection />
+      </section>
+
+      <section id="quality">
+        <IndustriesSection />
+      </section>
+
+      <section id="gallery">
+        <GallerySection />
+      </section>
+
+      <section id="clients">
+        <TrustedClients />
+      </section>
+
+      <section id="faq">
+        <FAQSection />
+      </section>
+
+      <section id="contact">
+        <ContactSection />
+      </section>
+    </>
   );
 };
 

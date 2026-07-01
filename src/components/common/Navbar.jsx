@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 import useAuth from "../../hooks/useAuth";
 
 const navItems = [
-  { name: "ABOUT", path: "/about" },
-  { name: "PRODUCTS", path: "/products" },
-  { name: "MANUFACTURING", path: "/manufacturing" },
-  { name: "SUSTAINABILITY", path: "/sustainability" },
-  { name: "QUALITY", path: "/quality" },
-  { name: "GALLERY", path: "/gallery" },
-  { name: "CONTACT", path: "/contact" },
+  { name: "ABOUT", id: "about" },
+  { name: "PRODUCTS", id: "products" },
+  { name: "MANUFACTURING", id: "manufacturing" },
+  { name: "SUSTAINABILITY", id: "sustainability" },
+  { name: "QUALITY", id: "quality" },
+  { name: "GALLERY", id: "gallery" },
+  { name: "CONTACT", id: "contact" },
 ];
 
 const Navbar = () => {
@@ -19,14 +19,62 @@ const Navbar = () => {
 
   const [sticky, setSticky] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("about");
 
   useEffect(() => {
-    const handleScroll = () => setSticky(window.scrollY > 10);
+    const handleScroll = () => {
+      setSticky(window.scrollY > 10);
+    };
 
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll("section[id]");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        threshold: 0.45,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+
+    if (!section) return;
+
+    const offset = 80;
+
+    window.scrollTo({
+      top: section.offsetTop - offset,
+      behavior: "smooth",
+    });
+
+    setMobileOpen(false);
+  };
+
+  const scrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    setMobileOpen(false);
+  };
 
   return (
     <>
@@ -40,16 +88,22 @@ const Navbar = () => {
             : "bg-[#F6F1E6]/92 backdrop-blur-md"
         }`}
       >
-        <div className="max-w-360 mx-auto px-6 lg:px-8">
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-8">
+
           <div className="flex h-20 items-center justify-between">
+
             {/* Logo */}
 
-            <Link to="/" className="flex items-center gap-3 shrink-0">
-              <div className="w-8.5 h-8.5 rounded-[3px] bg-[#17352B] flex items-center justify-center text-white font-black text-[15px]">
+            <button
+              onClick={scrollTop}
+              className="flex items-center gap-3 shrink-0"
+            >
+              <div className="w-[34px] h-[34px] rounded-[3px] bg-[#17352B] flex items-center justify-center text-white font-black text-[15px]">
                 S
               </div>
 
-              <div className="leading-none">
+              <div className="leading-none text-left">
+
                 <h2
                   className="uppercase text-[#17352B] font-bold tracking-wide text-[22px]"
                   style={{ fontFamily: "Barlow Condensed" }}
@@ -61,58 +115,54 @@ const Navbar = () => {
                   className="uppercase text-[9px] tracking-[0.22em] text-[#B78A54] mt-1"
                   style={{ fontFamily: "IBM Plex Mono" }}
                 >
-                  &amp; TRINS LTD.
+                  & TRINS LTD.
                 </p>
-              </div>
-            </Link>
 
-            {/* Desktop Menu */}
+              </div>
+            </button>
+
+            {/* Desktop Navigation */}
 
             <nav className="hidden xl:flex items-center gap-8">
+
               {navItems.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `group relative pb-2 uppercase text-[12px] tracking-[0.08em] transition-colors duration-300 ${
-                      isActive
-                        ? "text-[#17352B]"
-                        : "text-[#252525] hover:text-[#17352B]"
-                    }`
-                  }
+
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`relative group pb-2 uppercase text-[12px] tracking-[0.08em] transition-colors duration-300 ${
+                    activeSection === item.id
+                      ? "text-[#17352B]"
+                      : "text-[#444] hover:text-[#17352B]"
+                  }`}
                   style={{ fontFamily: "IBM Plex Mono" }}
                 >
-                  {({ isActive }) => (
-                    <>
-                      {item.name}
+                  {item.name}
 
-                      <span
-                        className={`
-          absolute
-          left-0
-          bottom-1.25
-          h-0.5
-          w-full
-          rounded-full
-          bg-[#E66A2C]
-          origin-center
-          transition-transform
-          duration-300
-          ease-out
-          ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}
-        `}
-                      />
-                    </>
+                  {activeSection === item.id && (
+                    <motion.span
+                      layoutId="nav-indicator"
+                      className="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-[#E66A2C]"
+                      transition={{
+                        type: "spring",
+                        stiffness: 450,
+                        damping: 35,
+                      }}
+                    />
                   )}
-                </NavLink>
+                </button>
+
               ))}
+
             </nav>
 
-            {/* CTA */}
+            {/* Right Side */}
 
             <div className="hidden xl:flex items-center">
+
               {user ? (
-                <div className="flex gap-4 items-center">
+                <div className="flex items-center gap-4">
+
                   <Link
                     to="/dashboard"
                     className="uppercase text-xs tracking-widest"
@@ -128,68 +178,94 @@ const Navbar = () => {
                   >
                     Logout
                   </button>
+
                 </div>
               ) : (
-                <Link
-                  to="/contact"
+                <button
+                  onClick={() => scrollToSection("contact")}
                   className="bg-[#E66A2C] hover:bg-[#d95c20] text-white px-7 py-3 uppercase text-xs tracking-[0.08em] transition hover:-translate-y-0.5"
                   style={{ fontFamily: "IBM Plex Mono" }}
                 >
                   REQUEST QUOTE
-                </Link>
+                </button>
               )}
+
             </div>
 
-            {/* Mobile Button */}
+            {/* Mobile */}
 
-            <button onClick={() => setMobileOpen(true)} className="xl:hidden">
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="xl:hidden"
+            >
               <HiOutlineBars3 size={30} />
             </button>
+
           </div>
+
         </div>
       </motion.header>
 
-      {/* Mobile Fullscreen Menu */}
+      {/* Mobile Menu */}
 
       <AnimatePresence>
+
         {mobileOpen && (
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-999 bg-[#17352B]"
+            className="fixed inset-0 z-[999] bg-[#17352B]"
           >
             <div className="px-6 py-6 h-full flex flex-col">
+
               <div className="flex justify-between items-center mb-12">
-                <Link
-                  to="/"
+
+                <button
+                  onClick={scrollTop}
                   className="text-white uppercase text-xl font-bold"
                   style={{ fontFamily: "Barlow Condensed" }}
                 >
                   SOIL
-                </Link>
-
-                <button onClick={() => setMobileOpen(false)}>
-                  <HiOutlineXMark className="text-white" size={34} />
                 </button>
+
+                <button
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <HiOutlineXMark
+                    className="text-white"
+                    size={34}
+                  />
+                </button>
+
               </div>
 
               <div className="flex flex-col">
+
                 {navItems.map((item) => (
-                  <NavLink
-                    key={item.path}
-                    to={item.path}
-                    onClick={() => setMobileOpen(false)}
-                    className="text-[#F6F1E6] border-b border-white/15 py-4 uppercase text-[34px] font-semibold"
+
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`border-b border-white/15 py-4 text-left uppercase text-[34px] font-semibold ${
+                      activeSection === item.id
+                        ? "text-[#E66A2C]"
+                        : "text-[#F6F1E6]"
+                    }`}
                     style={{ fontFamily: "Barlow Condensed" }}
                   >
                     {item.name}
-                  </NavLink>
+                  </button>
+
                 ))}
+
               </div>
 
               <div className="mt-auto">
+
                 {user ? (
+
                   <button
                     onClick={() => {
                       logoutUser();
@@ -200,20 +276,26 @@ const Navbar = () => {
                   >
                     Logout
                   </button>
+
                 ) : (
-                  <Link
-                    to="/contact"
-                    onClick={() => setMobileOpen(false)}
-                    className="block w-full bg-[#E66A2C] py-4 text-center uppercase text-white tracking-widest text-sm"
+
+                  <button
+                    onClick={() => scrollToSection("contact")}
+                    className="w-full bg-[#E66A2C] py-4 uppercase text-white tracking-widest text-sm"
                     style={{ fontFamily: "IBM Plex Mono" }}
                   >
                     REQUEST QUOTE
-                  </Link>
+                  </button>
+
                 )}
+
               </div>
+
             </div>
           </motion.div>
+
         )}
+
       </AnimatePresence>
 
       <div className="h-20" />
