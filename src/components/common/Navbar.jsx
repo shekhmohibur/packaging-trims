@@ -74,7 +74,7 @@ const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) =>
-                    `relative uppercase text-[12px] tracking-[0.08em] pb-1 transition ${
+                    `group relative pb-2 uppercase text-[12px] tracking-[0.08em] transition-colors duration-300 ${
                       isActive
                         ? "text-[#17352B]"
                         : "text-[#252525] hover:text-[#17352B]"
@@ -87,9 +87,20 @@ const Navbar = () => {
                       {item.name}
 
                       <span
-                        className={`absolute left-0 -bottom-1 h-[2px] bg-[#E66A2C] transition-all duration-300 ${
-                          isActive ? "w-full" : "w-0 hover:w-full"
-                        }`}
+                        className={`
+          absolute
+          left-0
+          bottom-[-6px]
+          h-[2px]
+          w-full
+          rounded-full
+          bg-[#E66A2C]
+          origin-center
+          transition-transform
+          duration-300
+          ease-out
+          ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}
+        `}
                       />
                     </>
                   )}
@@ -131,10 +142,7 @@ const Navbar = () => {
 
             {/* Mobile Button */}
 
-            <button
-              onClick={() => setMobileOpen(true)}
-              className="xl:hidden"
-            >
+            <button onClick={() => setMobileOpen(true)} className="xl:hidden">
               <HiOutlineBars3 size={30} />
             </button>
           </div>
@@ -162,10 +170,7 @@ const Navbar = () => {
                 </Link>
 
                 <button onClick={() => setMobileOpen(false)}>
-                  <HiOutlineXMark
-                    className="text-white"
-                    size={34}
-                  />
+                  <HiOutlineXMark className="text-white" size={34} />
                 </button>
               </div>
 
