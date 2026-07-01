@@ -16,8 +16,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-import heroData from "../../../data/hero/HeroData";
-import HeroSlide from "./HeroSlide";
+import heroData from "../../data/hero/HeroData";
+import HeroSlide from "../../components/common/hero/HeroSlide";
 
 const Hero = () => {
   const swiperRef = useRef(null);
@@ -61,7 +61,7 @@ const Hero = () => {
           swiperRef.current = swiper;
         }}
       >
-        {heroData.map((slide) => (
+        {heroData?.map((slide) => (
           <SwiperSlide key={slide.id}>
             <HeroSlide slide={slide} />
           </SwiperSlide>

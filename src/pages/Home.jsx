@@ -1,11 +1,14 @@
 import { Link } from "react-router";
-import Hero from "../components/common/hero/Hero";
+import Hero from "./home/Hero";
+import Mission from "./home/Mission";
 
 const Home = () => {
   return (
-    <div className="space-y-24">
+    <div>
       {/* Hero Section */}
       <Hero/>
+      {/* mission */}
+      <Mission/>
     </div>
   );
 };
