@@ -1,155 +1,77 @@
-import { useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import {
-  Autoplay,
-  Navigation,
-  Pagination,
-  Keyboard,
-  EffectFade,
-} from "swiper/modules";
-
-import { HiArrowLongLeft, HiArrowLongRight } from "react-icons/hi2";
-
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/effect-fade";
-import heroData from "../../data/hero/HeroData";
-import HeroSlide from "../../components/common/hero/HeroSlide";
+import { Link } from "react-router";
+import HeroFeatures from "../../data/hero/HeroData";
 
 const Hero = () => {
-  const swiperRef = useRef(null);
-
   return (
-    <section
-      className="relative"
-      onMouseEnter={() => swiperRef.current?.autoplay.stop()}
-      onMouseLeave={() => swiperRef.current?.autoplay.start()}
-    >
-      <Swiper
-        modules={[
-          Autoplay,
-          Navigation,
-          Pagination,
-          Keyboard,
-          EffectFade,
-        ]}
-        effect="fade"
-        fadeEffect={{
-          crossFade: true,
-        }}
-        loop
-        speed={900}
-        keyboard={{
-          enabled: true,
-        }}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-          dynamicBullets: true,
-        }}
-        navigation={{
-          prevEl: ".hero-prev",
-          nextEl: ".hero-next",
-        }}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-        }}
-      >
-        {heroData?.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <HeroSlide slide={slide} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+    <section className="relative overflow-hidden bg-[#0F2D25] text-white">
 
-      {/* Left Arrow */}
+      {/* diagonal lines */}
+      <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(135deg,transparent_0px,transparent_18px,white_19px,transparent_20px)]" />
 
-      <button
-        className="
-        hero-prev
-        absolute
-        left-8
-        top-1/2
-        z-30
-        hidden
-        h-14
-        w-14
-        -translate-y-1/2
-        items-center
-        justify-center
-        rounded-full
-        bg-white/90
-        text-[#1E311B]
-        shadow-xl
-        backdrop-blur
-        transition
-        duration-300
-        hover:scale-110
-        hover:bg-white
-        lg:flex
-        "
-      >
-        <HiArrowLongLeft size={28} />
-      </button>
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-12">
 
-      {/* Right Arrow */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-      <button
-        className="
-        hero-next
-        absolute
-        right-8
-        top-1/2
-        z-30
-        hidden
-        h-14
-        w-14
-        -translate-y-1/2
-        items-center
-        justify-center
-        rounded-full
-        bg-white/90
-        text-[#1E311B]
-        shadow-xl
-        backdrop-blur
-        transition
-        duration-300
-        hover:scale-110
-        hover:bg-white
-        lg:flex
-        "
-      >
-        <HiArrowLongRight size={28} />
-      </button>
+          {/* Left */}
 
-      {/* Slide Counter */}
+          <div>
 
-      <div
-        className="
-        absolute
-        bottom-8
-        left-1/2
-        z-30
-        -translate-x-1/2
-        rounded-full
-        bg-white/90
-        px-5
-        py-2
-        text-sm
-        font-medium
-        text-[#1E311B]
-        shadow-lg
-        backdrop-blur
-        "
-      >
-        Swipe • Drag • Click
+            <span className="inline-flex items-center rounded-full border border-[#E86C2D] px-4 py-1 text-[10px] uppercase tracking-[0.2em] text-[#E86C2D]">
+              Manufacturing Since Day One • Bangladesh
+            </span>
+
+            <h1 className="mt-6 text-5xl md:text-6xl xl:text-7xl font-black uppercase leading-[0.95]">
+              Packaging Built For
+              <br />
+              The <span className="text-[#D6854D]">Garments</span>
+              <br />
+              Supply Chain.
+            </h1>
+
+            <p className="mt-6 max-w-xl text-gray-300 leading-8">
+              Soil Packaging & Trims manufactures export-grade
+              corrugated cartons and poly bags/film engineered
+              to your buyer's specifications and ready for port.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+
+              <Link
+                to="/contact"
+                className="bg-[#E86C2D] px-8 py-4 uppercase text-sm font-semibold tracking-widest hover:bg-[#cf5d23] transition"
+              >
+                Get A Quote
+              </Link>
+
+              <Link
+                to="/products"
+                className="border border-gray-500 px-8 py-4 uppercase text-sm font-semibold tracking-widest hover:bg-white hover:text-black transition"
+              >
+                Explore Products
+              </Link>
+
+            </div>
+
+          </div>
+
+          {/* Right */}
+
+          <div className="hidden lg:flex justify-end">
+
+            <img
+              src="/hero-packaging.png"
+              alt=""
+              className="w-full max-w-xl object-contain"
+            />
+
+          </div>
+
+        </div>
+
+        <HeroFeatures />
+
       </div>
+
     </section>
   );
 };

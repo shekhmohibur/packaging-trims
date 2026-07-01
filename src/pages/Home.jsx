@@ -1,23 +1,18 @@
 import { Link } from "react-router";
 import Hero from "./home/Hero";
-import Mission from "./home/Mission";
-import MaterialInnovation from "./home/MaterialInnovation";
-import WhyChooseUs from "./home/WhyChooseUs";
-import CallToAction from "./home/CallToAction";
+import AboutSection from "./home/AboutSection";
+import StatsCard from "./home/StatsCard";
+import ProductionProcess from "./home/ProductionProcess";
 
 const Home = () => {
   return (
     <div>
       {/* Hero Section */}
       <Hero />
-      {/* mission */}
-      <Mission />
-      {/* material innovation */}
-      <MaterialInnovation />
-      {/* why choose us */}
-      <WhyChooseUs />
-      {/* call to action */}
-      <CallToAction />
+      {/* Stats Card */}
+      <AboutSection/>
+      {/* Production Process */}
+      <ProductionProcess/>
     </div>
   );
 };

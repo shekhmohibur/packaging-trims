@@ -4,35 +4,24 @@ import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 import useAuth from "../../hooks/useAuth";
 
-const menuItems = [
-  {
-    name: "Products",
-    path: "/products",
-  },
-  {
-    name: "Our Story",
-    path: "/story",
-  },
-  {
-    name: "Sustainability",
-    path: "/sustainability",
-  },
-  {
-    name: "Contact",
-    path: "/contact",
-  },
+const navItems = [
+  { name: "ABOUT", path: "/about" },
+  { name: "PRODUCTS", path: "/products" },
+  { name: "MANUFACTURING", path: "/manufacturing" },
+  { name: "SUSTAINABILITY", path: "/sustainability" },
+  { name: "QUALITY", path: "/quality" },
+  { name: "GALLERY", path: "/gallery" },
+  { name: "CONTACT", path: "/contact" },
 ];
 
 const Navbar = () => {
   const { user, logoutUser } = useAuth();
 
-  const [isSticky, setIsSticky] = useState(false);
+  const [sticky, setSticky] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 20);
-    };
+    const handleScroll = () => setSticky(window.scrollY > 10);
 
     window.addEventListener("scroll", handleScroll);
 
@@ -41,189 +30,186 @@ const Navbar = () => {
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -80 }}
+      <motion.header
+        initial={{ y: -70 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.45 }}
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300
-        ${
-          isSticky
-            ? "bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm"
-            : "bg-white"
+        transition={{ duration: 0.4 }}
+        className={`fixed top-0 left-0 z-50 w-full border-b border-[#ddd4c7] transition-all duration-300 ${
+          sticky
+            ? "bg-[#F6F1E6]/95 backdrop-blur-md shadow-sm"
+            : "bg-[#F6F1E6]/92 backdrop-blur-md"
         }`}
       >
-        <div className="max-w-365 mx-auto px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-3 items-center h-20">
+        <div className="max-w-360 mx-auto px-5 lg:px-12">
+          <div className="flex h-20 items-center justify-between">
             {/* Logo */}
 
-            <Link
-              to="/"
-              className="justify-self-start font-serif text-3xl lg:text-4xl font-semibold text-[#1E311B]"
-            >
-              Soil of Our Faith
+            <Link to="/" className="flex items-center gap-3 shrink-0">
+              <div className="w-[34px] h-[34px] rounded-[3px] bg-[#17352B] flex items-center justify-center text-white font-black text-[15px]">
+                S
+              </div>
+
+              <div className="leading-none">
+                <h2
+                  className="uppercase text-[#17352B] font-bold tracking-wide text-[22px]"
+                  style={{ fontFamily: "Barlow Condensed" }}
+                >
+                  SOIL PACKAGING
+                </h2>
+
+                <p
+                  className="uppercase text-[9px] tracking-[0.22em] text-[#B78A54] mt-1"
+                  style={{ fontFamily: "IBM Plex Mono" }}
+                >
+                  &amp; TRINS LTD.
+                </p>
+              </div>
             </Link>
 
             {/* Desktop Menu */}
 
-            <div className="hidden lg:flex justify-self-center items-center gap-12">
-              {menuItems.map((item) => (
+            <nav className="hidden xl:flex items-center gap-8">
+              {navItems.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) =>
-                    `relative text-[15px] font-medium transition duration-300 pb-1
-                    ${
+                    `relative uppercase text-[12px] tracking-[0.08em] pb-1 transition ${
                       isActive
-                        ? "text-[#1E311B]"
-                        : "text-gray-700 hover:text-[#1E311B]"
+                        ? "text-[#17352B]"
+                        : "text-[#252525] hover:text-[#17352B]"
                     }`
                   }
+                  style={{ fontFamily: "IBM Plex Mono" }}
                 >
                   {({ isActive }) => (
                     <>
                       {item.name}
 
                       <span
-                        className={`absolute left-0 -bottom-1 h-0.5 bg-[#1E311B] transition-all duration-300
-                        ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                        className={`absolute left-0 -bottom-1 h-[2px] bg-[#E66A2C] transition-all duration-300 ${
+                          isActive ? "w-full" : "w-0 hover:w-full"
+                        }`}
                       />
                     </>
                   )}
                 </NavLink>
               ))}
-            </div>
+            </nav>
 
-            {/* Right Side */}
+            {/* CTA */}
 
-            <div className="hidden lg:flex justify-self-end items-center gap-4">
+            <div className="hidden xl:flex items-center">
               {user ? (
-                <>
+                <div className="flex gap-4 items-center">
                   <Link
                     to="/dashboard"
-                    className="text-[#1E311B] font-medium hover:text-black transition"
+                    className="uppercase text-xs tracking-widest"
+                    style={{ fontFamily: "IBM Plex Mono" }}
                   >
                     Dashboard
                   </Link>
 
                   <button
                     onClick={logoutUser}
-                    className="px-5 py-3 rounded-md border border-[#1E311B] text-[#1E311B] font-semibold hover:bg-[#1E311B] hover:text-white transition"
+                    className="bg-[#E66A2C] hover:bg-[#d95c20] text-white px-6 py-3 uppercase text-xs tracking-widest transition"
+                    style={{ fontFamily: "IBM Plex Mono" }}
                   >
                     Logout
                   </button>
-                </>
+                </div>
               ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="text-[#1E311B] font-medium hover:text-black transition"
-                  >
-                    Login
-                  </Link>
-
-                  <Link
-                    to="/contact"
-                    className="bg-[#1E311B] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#2B4728] transition duration-300"
-                  >
-                    Inquire Now
-                  </Link>
-                </>
+                <Link
+                  to="/contact"
+                  className="bg-[#E66A2C] hover:bg-[#d95c20] text-white px-7 py-3 uppercase text-xs tracking-[0.08em] transition hover:-translate-y-0.5"
+                  style={{ fontFamily: "IBM Plex Mono" }}
+                >
+                  REQUEST QUOTE
+                </Link>
               )}
             </div>
 
             {/* Mobile Button */}
 
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden justify-self-end text-[#1E311B]"
+              onClick={() => setMobileOpen(true)}
+              className="xl:hidden"
             >
-              {mobileOpen ? (
-                <HiOutlineXMark size={32} />
-              ) : (
-                <HiOutlineBars3 size={30} />
-              )}
+              <HiOutlineBars3 size={30} />
             </button>
           </div>
         </div>
+      </motion.header>
 
-        {/* Mobile Menu */}
+      {/* Mobile Fullscreen Menu */}
 
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.25 }}
-              className="lg:hidden bg-white border-t border-gray-200 shadow-md"
-            >
-              <div className="px-6 py-6 flex flex-col gap-5">
-                {menuItems.map((item) => (
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[999] bg-[#17352B]"
+          >
+            <div className="px-6 py-6 h-full flex flex-col">
+              <div className="flex justify-between items-center mb-12">
+                <Link
+                  to="/"
+                  className="text-white uppercase text-xl font-bold"
+                  style={{ fontFamily: "Barlow Condensed" }}
+                >
+                  SOIL
+                </Link>
+
+                <button onClick={() => setMobileOpen(false)}>
+                  <HiOutlineXMark
+                    className="text-white"
+                    size={34}
+                  />
+                </button>
+              </div>
+
+              <div className="flex flex-col">
+                {navItems.map((item) => (
                   <NavLink
                     key={item.path}
                     to={item.path}
                     onClick={() => setMobileOpen(false)}
-                    className={({ isActive }) =>
-                      `text-base font-medium transition
-                      ${
-                        isActive
-                          ? "text-[#1E311B]"
-                          : "text-gray-700 hover:text-[#1E311B]"
-                      }`
-                    }
+                    className="text-[#F6F1E6] border-b border-white/15 py-4 uppercase text-[34px] font-semibold"
+                    style={{ fontFamily: "Barlow Condensed" }}
                   >
                     {item.name}
                   </NavLink>
                 ))}
-
-                <div className="border-t pt-5 flex flex-col gap-3">
-                  {user ? (
-                    <>
-                      <Link
-                        to="/dashboard"
-                        onClick={() => setMobileOpen(false)}
-                        className="font-medium text-[#1E311B]"
-                      >
-                        Dashboard
-                      </Link>
-
-                      <button
-                        onClick={() => {
-                          logoutUser();
-                          setMobileOpen(false);
-                        }}
-                        className="w-full py-3 rounded-md border border-[#1E311B] text-[#1E311B] font-semibold"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        to="/login"
-                        onClick={() => setMobileOpen(false)}
-                        className="font-medium text-[#1E311B]"
-                      >
-                        Login
-                      </Link>
-
-                      <Link
-                        to="/contact"
-                        onClick={() => setMobileOpen(false)}
-                        className="bg-[#1E311B] text-center text-white py-3 rounded-md font-semibold"
-                      >
-                        Inquire Now
-                      </Link>
-                    </>
-                  )}
-                </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.nav>
 
-      {/* Spacer */}
+              <div className="mt-auto">
+                {user ? (
+                  <button
+                    onClick={() => {
+                      logoutUser();
+                      setMobileOpen(false);
+                    }}
+                    className="w-full bg-[#E66A2C] py-4 uppercase text-white tracking-widest text-sm"
+                    style={{ fontFamily: "IBM Plex Mono" }}
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    to="/contact"
+                    onClick={() => setMobileOpen(false)}
+                    className="block w-full bg-[#E66A2C] py-4 text-center uppercase text-white tracking-widest text-sm"
+                    style={{ fontFamily: "IBM Plex Mono" }}
+                  >
+                    REQUEST QUOTE
+                  </Link>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="h-20" />
     </>
