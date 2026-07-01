@@ -40,12 +40,12 @@ const Navbar = () => {
             : "bg-[#F6F1E6]/92 backdrop-blur-md"
         }`}
       >
-        <div className="max-w-360 mx-auto px-5 lg:px-12">
+        <div className="max-w-360 mx-auto px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
             {/* Logo */}
 
             <Link to="/" className="flex items-center gap-3 shrink-0">
-              <div className="w-[34px] h-[34px] rounded-[3px] bg-[#17352B] flex items-center justify-center text-white font-black text-[15px]">
+              <div className="w-8.5 h-8.5 rounded-[3px] bg-[#17352B] flex items-center justify-center text-white font-black text-[15px]">
                 S
               </div>
 
@@ -90,8 +90,8 @@ const Navbar = () => {
                         className={`
           absolute
           left-0
-          bottom-[-6px]
-          h-[2px]
+          bottom-1.25
+          h-0.5
           w-full
           rounded-full
           bg-[#E66A2C]
@@ -157,7 +157,7 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[999] bg-[#17352B]"
+            className="fixed inset-0 z-999 bg-[#17352B]"
           >
             <div className="px-6 py-6 h-full flex flex-col">
               <div className="flex justify-between items-center mb-12">

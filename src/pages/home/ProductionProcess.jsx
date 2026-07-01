@@ -98,7 +98,7 @@ const ProductionProcess = () => {
 
   return (
     <section className="bg-[#fff0d3] py-20">
-      <div className="max-w-7xl mx-auto px-5 lg:px-8">
+      <div className="max-w-360 mx-auto px-5 lg:px-8">
 
         {/* Header */}
 

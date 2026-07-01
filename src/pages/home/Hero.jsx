@@ -8,7 +8,7 @@ const Hero = () => {
       {/* diagonal lines */}
       <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(135deg,transparent_0px,transparent_18px,white_19px,transparent_20px)]" />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-12">
+      <div className="relative max-w-360 mx-auto px-6 lg:px-10 pt-28 pb-12">
 
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
