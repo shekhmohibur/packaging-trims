@@ -1,2 +1,27 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+
+
+/* -------------------------- */
+/* HERO PAGINATION */
+/* -------------------------- */
+
+.swiper-pagination {
+    bottom: 45px !important;
+}
+
+.swiper-pagination-bullet {
+    width: 11px;
+    height: 11px;
+    background: white;
+    opacity: .45;
+    transition: all .35s ease;
+}
+
+.swiper-pagination-bullet-active {
+    width: 36px;
+    border-radius: 999px;
+    background: #1E311B;
+    opacity: 1;
+}

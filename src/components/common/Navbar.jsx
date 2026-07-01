@@ -52,7 +52,7 @@ const Navbar = () => {
             : "bg-white"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-365 mx-auto px-6">
           <div className="grid grid-cols-2 lg:grid-cols-3 items-center h-20">
             {/* Logo */}
 
@@ -84,7 +84,7 @@ const Navbar = () => {
                       {item.name}
 
                       <span
-                        className={`absolute left-0 -bottom-1 h-[2px] bg-[#1E311B] transition-all duration-300
+                        className={`absolute left-0 -bottom-1 h-0.5 bg-[#1E311B] transition-all duration-300
                         ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
                       />
                     </>
