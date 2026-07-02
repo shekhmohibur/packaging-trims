@@ -38,7 +38,7 @@ export default function ContactInfo() {
         Get In Touch
       </span>
 
-      <h2 className="mt-6 text-4xl lg:text-5xl font-black uppercase text-[#F7F2E8] leading-tight">
+      <h2 className="mt-6 text-3xl md:text-4xl lg:text-5xl font-black uppercase text-[#F7F2E8] leading-tight">
         {contactData.title}
       </h2>
 

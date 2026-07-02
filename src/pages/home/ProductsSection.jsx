@@ -54,7 +54,7 @@ const ProductsSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.5 }}
           className="max-w-3xl"
         >
@@ -62,7 +62,7 @@ const ProductsSection = () => {
             What We Make
           </span>
 
-          <h2 className="mt-6 text-4xl md:text-5xl xl:text-6xl font-black uppercase leading-[1.05] text-[#17352B]">
+          <h2 className="mt-6 text-3xl md:text-4xl xl:text-5xl font-black uppercase leading-[1.05] text-[#17352B]">
             Carton And Poly Packaging,
             <br />
             Built To Spec.
@@ -77,7 +77,7 @@ const ProductsSection = () => {
               key={product.title}
               initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{
                 duration: 0.45,
                 delay: index * 0.1,

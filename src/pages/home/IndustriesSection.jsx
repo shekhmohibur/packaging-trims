@@ -1,12 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  Shirt,
-  Scissors,
-  Package,
-  Building2,
-  Tags,
-  Ship,
-} from "lucide-react";
+import { Shirt, Scissors, Package, Building2, Tags, Ship } from "lucide-react";
 
 const industries = [
   {
@@ -40,21 +33,20 @@ const IndustriesSection = () => {
   return (
     <section className="bg-[#F7F2E8] py-20 lg:py-28">
       <div className="max-w-360 mx-auto px-5 lg:px-8">
-
         {/* Heading */}
 
         <motion.div
           initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: .5 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.5 }}
           className="max-w-4xl"
         >
           <span className="inline-flex items-center rounded-full border border-[#17352B] px-4 py-1 text-[10px] uppercase tracking-[0.25em] text-[#17352B]">
             Who We Serve
           </span>
 
-          <h2 className="mt-6 text-4xl md:text-5xl xl:text-6xl font-black uppercase leading-[1.05] text-[#17352B]">
+          <h2 className="mt-6 text-3xl md:text-4xl xl:text-5xl font-black uppercase leading-[1.05] text-[#17352B]">
             Built Around The Export
             <br />
             Garments Supply Chain.
@@ -64,7 +56,6 @@ const IndustriesSection = () => {
         {/* Industry Cards */}
 
         <div className="mt-16 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-5">
-
           {industries.map((item, index) => {
             const Icon = item.icon;
 
@@ -73,10 +64,10 @@ const IndustriesSection = () => {
                 key={item.title}
                 initial={{ opacity: 0, y: 35 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 transition={{
-                  duration: .45,
-                  delay: index * .08,
+                  duration: 0.45,
+                  delay: index * 0.08,
                 }}
                 className={`
                   group
@@ -145,9 +136,7 @@ const IndustriesSection = () => {
               </motion.div>
             );
           })}
-
         </div>
-
       </div>
     </section>
   );

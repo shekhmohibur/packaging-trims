@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 import useAuth from "../../hooks/useAuth";
-
+import logo from "../../assets/logo.png"
 const navItems = [
   { name: "ABOUT", id: "about" },
   { name: "PRODUCTS", id: "products" },
@@ -88,7 +88,7 @@ const Navbar = () => {
             : "bg-[#F6F1E6]/92 backdrop-blur-md"
         }`}
       >
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-8">
+        <div className="max-w-360 mx-auto px-6 lg:px-8">
 
           <div className="flex h-20 items-center justify-between">
 
@@ -98,15 +98,14 @@ const Navbar = () => {
               onClick={scrollTop}
               className="flex items-center gap-3 shrink-0"
             >
-              <div className="w-[34px] h-[34px] rounded-[3px] bg-[#17352B] flex items-center justify-center text-white font-black text-[15px]">
-                S
+              <div className="w-8.5 h-8.5 rounded-[3px] bg-[#17352B] flex items-center justify-center text-white font-black text-[15px]">
+                <img src={logo} alt="" />
               </div>
 
               <div className="leading-none text-left">
 
                 <h2
                   className="uppercase text-[#17352B] font-bold tracking-wide text-[22px]"
-                  style={{ fontFamily: "Barlow Condensed" }}
                 >
                   SOIL PACKAGING
                 </h2>
@@ -115,7 +114,7 @@ const Navbar = () => {
                   className="uppercase text-[9px] tracking-[0.22em] text-[#B78A54] mt-1"
                   style={{ fontFamily: "IBM Plex Mono" }}
                 >
-                  & TRINS LTD.
+                  & TRIMS LTD.
                 </p>
 
               </div>
@@ -123,38 +122,40 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
 
-            <nav className="hidden xl:flex items-center gap-8">
+<nav className="hidden xl:flex items-center gap-8">
+  {navItems.map((item) => (
+    <button
+      key={item.id}
+      onClick={() => scrollToSection(item.id)}
+      className={`relative group cursor-pointer pb-2 uppercase text-[12px] tracking-[0.08em] transition-all duration-300 hover:-translate-y-[1px] ${
+        activeSection === item.id
+          ? "text-[#17352B]"
+          : "text-[#444] hover:text-[#17352B]"
+      }`}
+      style={{ fontFamily: "IBM Plex Mono" }}
+    >
+      {item.name}
 
-              {navItems.map((item) => (
+      {/* Hover underline */}
+      {activeSection !== item.id && (
+        <span className="absolute left-0 bottom-0 h-[2px] w-full origin-left scale-x-0 rounded-full bg-[#E66A2C] transition-transform duration-300 ease-out group-hover:scale-x-100" />
+      )}
 
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`relative group pb-2 uppercase text-[12px] tracking-[0.08em] transition-colors duration-300 ${
-                    activeSection === item.id
-                      ? "text-[#17352B]"
-                      : "text-[#444] hover:text-[#17352B]"
-                  }`}
-                  style={{ fontFamily: "IBM Plex Mono" }}
-                >
-                  {item.name}
-
-                  {activeSection === item.id && (
-                    <motion.span
-                      layoutId="nav-indicator"
-                      className="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-[#E66A2C]"
-                      transition={{
-                        type: "spring",
-                        stiffness: 450,
-                        damping: 35,
-                      }}
-                    />
-                  )}
-                </button>
-
-              ))}
-
-            </nav>
+      {/* Active underline */}
+      {activeSection === item.id && (
+        <motion.span
+          layoutId="nav-indicator"
+          className="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-[#E66A2C]"
+          transition={{
+            type: "spring",
+            stiffness: 450,
+            damping: 35,
+          }}
+        />
+      )}
+    </button>
+  ))}
+</nav>
 
             {/* Right Side */}
 
