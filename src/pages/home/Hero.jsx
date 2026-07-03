@@ -86,14 +86,14 @@ const Hero = () => {
             className="mt-10 flex flex-wrap gap-4"
           >
             <Link
-              to="/contact"
-              className="bg-[#E86C2D] px-8 py-4 text-sm font-semibold uppercase tracking-widest transition hover:bg-[#cf5d23]"
+              to="/#contact"
+              className="bg-[#E86C2D] px-8 py-4 text-sm font-semibold uppercase tracking-widest transition duration-300 hover:bg-[#cf5d23]"
             >
               Get A Quote
             </Link>
 
             <Link
-              to="/products"
+              to="/#products"
               className="border border-gray-400 px-8 py-4 text-sm font-semibold uppercase tracking-widest transition duration-300 hover:bg-white hover:text-black"
             >
               Explore Products

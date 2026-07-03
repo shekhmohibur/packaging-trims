@@ -14,43 +14,43 @@ import ContactSection from "./home/ContactSection";
 const Home = () => {
   return (
     <>
-      <section id="hero">
+      <section id="hero" style={{ scrollMarginTop: "100px" }}>
         <Hero />
       </section>
 
-      <section id="about">
+      <section id="about" style={{ scrollMarginTop: "100px" }}>
         <AboutSection />
       </section>
 
-      <section id="manufacturing">
+      <section id="manufacturing" style={{ scrollMarginTop: "100px" }}>
         <ProductionProcess />
       </section>
 
-      <section id="products">
+      <section id="products" style={{ scrollMarginTop: "100px" }}>
         <ProductsSection />
       </section>
 
-      <section id="sustainability">
+      <section id="sustainability" style={{ scrollMarginTop: "100px" }}>
         <SustainabilitySection />
       </section>
 
-      <section id="quality">
+      <section id="quality" style={{ scrollMarginTop: "100px" }}>
         <IndustriesSection />
       </section>
 
-      <section id="gallery">
+      <section id="gallery" style={{ scrollMarginTop: "100px" }}>
         <GallerySection />
       </section>
 
-      <section id="clients">
+      <section id="clients" style={{ scrollMarginTop: "100px" }}>
         <TrustedClients />
       </section>
 
-      <section id="faq">
+      <section id="faq" style={{ scrollMarginTop: "100px" }}>
         <FAQSection />
       </section>
 
-      <section id="contact">
+      <section id="contact" style={{ scrollMarginTop: "100px" }}>
         <ContactSection />
       </section>
     </>

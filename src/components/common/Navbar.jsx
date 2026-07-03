@@ -23,13 +23,14 @@ const Navbar = () => {
 
   const [sticky, setSticky] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("about");
+  const [activeSection, setActiveSection] = useState(
+    () => location.hash.replace("#", "") || "about",
+  );
 
   useEffect(() => {
     const handleScroll = () => {
-      setSticky(window.scrollY > 10);
+      setSticky(window.scrollY > 8);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -44,77 +45,93 @@ const Navbar = () => {
           }
         });
       },
-      { threshold: 0.45 },
+      {
+        threshold: 0.45,
+        rootMargin: "-80px 0px -40% 0px",
+      },
     );
-
     sections.forEach((section) => observer.observe(section));
-
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+    const hash = location.hash.replace("#", "");
+    if (!hash) return;
+    const section = document.getElementById(hash);
+    if (!section) return;
+    setActiveSection(hash);
+    const top = section.getBoundingClientRect().top + window.scrollY - 96;
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top, behavior: "smooth" });
+    });
+  }, [location.hash, location.pathname]);
+
   const scrollToSection = (id) => {
-    const offset = 100;
-
-    const scrollToTarget = () => {
-      const section = document.getElementById(id);
-      if (!section) return;
-
-      const top = section.getBoundingClientRect().top + window.scrollY - offset;
-
-      window.scrollTo({
-        top,
-        behavior: "smooth",
-      });
-
-      window.history.replaceState(null, "", `/#${id}`);
-    };
-
-    if (location.pathname !== "/") {
-      navigate("/", { replace: false });
-      setTimeout(scrollToTarget, 250);
-    } else {
-      scrollToTarget();
-    }
-
+    const section = document.getElementById(id);
+    if (!section) return;
+    setActiveSection(id);
     setMobileOpen(false);
+
+    const scroll = () => {
+      const target =
+        id === "contact"
+          ? section.querySelector("form, .quote-form") || section
+          : section;
+      const top = target.getBoundingClientRect().top + window.scrollY - 96;
+      window.scrollTo({ top, behavior: "smooth" });
+      window.history.replaceState({}, "", `/#${id}`);
+    };
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(scroll, 220);
+    } else {
+      scroll();
+    }
   };
 
   const scrollTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setMobileOpen(false);
   };
 
-  const renderNavItems = () =>
+  const renderNavItems = (mobile = false) =>
     navItems.map((item) => {
-      const isActiveItem = activeSection === item.id;
+      const active = activeSection === item.id;
 
       return (
         <li key={item.id}>
           <button
             onClick={() => scrollToSection(item.id)}
-            className={`group relative flex items-center justify-between rounded-xl px-4 py-3 text-left uppercase tracking-[0.12em] transition-all duration-300 lg:rounded-none lg:px-0 lg:py-0 ${
-              isActiveItem
-                ? "bg-[#17352B] text-[#E66A2C] lg:bg-transparent"
-                : "bg-white text-[#17352B] hover:bg-[#f3e9da] lg:bg-transparent lg:text-[#444] lg:hover:text-[#17352B]"
+            className={`group relative flex cursor-pointer items-center ${
+              mobile
+                ? "w-full justify-between rounded-xl px-4 py-3"
+                : "px-2 py-2"
             }`}
             style={{ fontFamily: "IBM Plex Mono" }}
           >
-            <span className="text-sm font-semibold lg:text-[12px]">
-              {item.name}
+            <span className="relative inline-flex items-center">
+              <span
+                className={`text-[12px] uppercase tracking-[0.14em] transition-colors duration-300 ${
+                  active
+                    ? "font-bold text-[#17352B]"
+                    : "text-[#555] group-hover:text-[#17352B]"
+                }`}
+              >
+                {item.name}
+              </span>
+
+              <span
+                className={`absolute -bottom-[6px] left-0 h-[2px] w-full origin-left rounded-full bg-[#E66A2C] transition-transform duration-300 ${
+                  active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`}
+              />
             </span>
 
-            {isActiveItem ? (
-              <motion.span
-                layoutId="nav-indicator"
-                className="absolute bottom-0 left-0 h-[2px] w-full rounded-full bg-[#E66A2C] lg:bottom-[-8px]"
-                transition={{ type: "spring", stiffness: 450, damping: 35 }}
-              />
-            ) : (
-              <span className="absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 rounded-full bg-[#E66A2C] transition-transform duration-300 ease-out group-hover:scale-x-100 lg:bottom-[-8px]" />
+            {mobile && active && (
+              <span className="text-sm text-[#E66A2C] transition-transform duration-300">
+                →
+              </span>
             )}
           </button>
         </li>
@@ -123,30 +140,30 @@ const Navbar = () => {
 
   return (
     <>
-      <motion.header
-        initial={{ y: -70 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.4 }}
-        className={`fixed left-0 top-0 z-50 w-full border-b border-[#ddd4c7] transition-all duration-300 ${
-          sticky
-            ? "bg-[#F6F1E6]/95 shadow-sm backdrop-blur-md"
-            : "bg-[#F6F1E6]/92 backdrop-blur-md"
+      <header
+        className={`fixed inset-x-0 top-0 z-50 border-b border-transparent transition-all duration-300 ${
+          sticky ? "bg-[#F5F2EA]/95 shadow-md backdrop-blur-sm" : "bg-[#F5F2EA]"
         }`}
       >
-        <div className="mx-auto flex h-20 max-w-360 items-center justify-between px-6 lg:px-8">
+        <div className="mx-auto flex h-20 w-full max-w-[1440px] items-center justify-between px-5 sm:px-6 lg:px-8 xl:px-10">
+          {/* Logo */}
           <button
             onClick={scrollTop}
-            className="flex shrink-0 items-center gap-3"
+            aria-label="Go to top"
+            className="flex shrink-0 cursor-pointer items-center gap-3"
           >
-            <div className="flex h-8.5 w-8.5 items-center justify-center rounded-[3px] bg-[#17352B] text-[15px] font-black text-white">
-              <img src={logo} alt="" />
+            <div className="flex h-11 w-11 items-center justify-center bg-[#17352B]">
+              <img
+                src={logo}
+                alt="Soil Packaging"
+                draggable={false}
+                className="h-full w-full object-contain"
+              />
             </div>
-
             <div className="text-left leading-none">
-              <h2 className="text-[22px] font-bold uppercase tracking-wide text-[#17352B]">
+              <h2 className="whitespace-nowrap text-base font-bold uppercase tracking-wide text-[#17352B] sm:text-lg lg:text-xl">
                 SOIL PACKAGING
               </h2>
-
               <p
                 className="mt-1 text-[9px] uppercase tracking-[0.22em] text-[#B78A54]"
                 style={{ fontFamily: "IBM Plex Mono" }}
@@ -156,55 +173,29 @@ const Navbar = () => {
             </div>
           </button>
 
-          <div className="flex items-center gap-3">
-            <nav
-              aria-label="Primary navigation"
-              className={`${
-                mobileOpen ? "flex" : "hidden"
-              } fixed inset-x-4 top-24 z-50 flex-col rounded-[24px] border border-[#ddd4c7] bg-[#F6F1E6] p-3 shadow-xl lg:static lg:inset-auto lg:flex lg:flex-row lg:items-center lg:gap-8 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
-            >
-              <ul className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-8">
-                {renderNavItems()}
-              </ul>
+          {/* Desktop Navigation */}
+          <nav aria-label="Primary Navigation" className="hidden lg:block">
+            <ul className="flex items-center gap-5 xl:gap-7">
+              {renderNavItems()}
+            </ul>
+          </nav>
 
-              <div className="mt-4 flex flex-col gap-3 border-t border-[#E7DDCF] pt-4 lg:hidden">
-                {user ? (
-                  <button
-                    onClick={() => {
-                      logoutUser();
-                      setMobileOpen(false);
-                    }}
-                    className="w-full rounded-xl bg-[#E66A2C] px-4 py-3.5 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-[#d95c20]"
-                    style={{ fontFamily: "IBM Plex Mono" }}
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => scrollToSection("contact")}
-                    className="w-full rounded-xl bg-[#17352B] px-4 py-3.5 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-[#0f2d25]"
-                    style={{ fontFamily: "IBM Plex Mono" }}
-                  >
-                    Request Quote
-                  </button>
-                )}
-              </div>
-            </nav>
-
+          {/* Right Side CTA & Mobile Toggle */}
+          <div className="flex shrink-0 items-center gap-4">
+            {/* Desktop CTA */}
             <div className="hidden items-center gap-4 lg:flex">
               {user ? (
                 <>
                   <Link
                     to="/dashboard"
-                    className="text-xs uppercase tracking-widest text-[#17352B]"
+                    className="text-xs font-medium uppercase tracking-[0.16em] text-[#17352B] transition hover:text-[#E66A2C]"
                     style={{ fontFamily: "IBM Plex Mono" }}
                   >
                     Dashboard
                   </Link>
-
                   <button
                     onClick={logoutUser}
-                    className="bg-[#E66A2C] px-6 py-3 text-xs uppercase tracking-widest text-white transition hover:bg-[#d95c20]"
+                    className="bg-[#E66A2C] px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-[#d95c20]"
                     style={{ fontFamily: "IBM Plex Mono" }}
                   >
                     Logout
@@ -213,7 +204,7 @@ const Navbar = () => {
               ) : (
                 <button
                   onClick={() => scrollToSection("contact")}
-                  className="bg-[#E66A2C] px-7 py-3 text-xs uppercase tracking-[0.08em] text-white transition hover:-translate-y-0.5 hover:bg-[#d95c20]"
+                  className="bg-[#E66A2C] px-6 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 hover:bg-[#d95c20]"
                   style={{ fontFamily: "IBM Plex Mono" }}
                 >
                   REQUEST QUOTE
@@ -221,33 +212,72 @@ const Navbar = () => {
               )}
             </div>
 
+            {/* Mobile Menu Toggle */}
             <button
+              aria-label="Toggle Navigation"
+              aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((prev) => !prev)}
-              className="rounded-full border border-[#D9D1C6] bg-white/70 p-2.5 text-[#17352B] shadow-sm transition hover:border-[#E66A2C] hover:text-[#E66A2C] lg:hidden"
+              className="cursor-pointer p-2 text-[#17352B] transition-colors hover:text-[#E66A2C] lg:hidden"
             >
               {mobileOpen ? (
-                <HiOutlineXMark size={24} />
+                <HiOutlineXMark size={28} />
               ) : (
-                <HiOutlineBars3 size={24} />
+                <HiOutlineBars3 size={28} />
               )}
             </button>
           </div>
         </div>
-      </motion.header>
 
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-[#0F2D25]/40 backdrop-blur-sm lg:hidden"
-            onClick={() => setMobileOpen(false)}
-          />
-        )}
-      </AnimatePresence>
+        <AnimatePresence>
+          {mobileOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.24, ease: "easeOut" }}
+                className="absolute left-0 top-20 w-full bg-[#F5F2EA] shadow-xl lg:hidden"
+              >
+                <nav className="flex flex-col space-y-4 px-6 py-6">
+                  <ul className="space-y-2">{renderNavItems(true)}</ul>
 
-      <div className="h-20" />
+                  <div className="mt-4 border-t border-[#DDD5C8] pt-6">
+                    {user ? (
+                      <button
+                        onClick={() => {
+                          logoutUser();
+                          setMobileOpen(false);
+                        }}
+                        className="w-full bg-[#E66A2C] py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#D95C20]"
+                        style={{ fontFamily: "IBM Plex Mono" }}
+                      >
+                        Logout
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => scrollToSection("contact")}
+                        className="w-full bg-[#17352B] py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#10261E]"
+                        style={{ fontFamily: "IBM Plex Mono" }}
+                      >
+                        REQUEST QUOTE
+                      </button>
+                    )}
+                  </div>
+                </nav>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 top-20 z-40 bg-black/20 lg:hidden"
+                onClick={() => setMobileOpen(false)}
+              />
+            </>
+          )}
+        </AnimatePresence>
+      </header>
     </>
   );
 };

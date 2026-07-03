@@ -1,53 +1,55 @@
+import contactData from "../contact/contactData";
+
 const footerData = {
   description:
     "Corrugated carton and poly bag/film manufacturer built for the garments export supply chain.",
 
   company: [
     {
-      name: "About Us",
+      name: "ABOUT",
       path: "/#about",
     },
     {
-      name: "Quality",
-      path: "/#quality",
+      name: "PRODUCTS",
+      path: "/#products",
     },
     {
-      name: "Gallery",
-      path: "/#gallery",
+      name: "MANUFACTURING",
+      path: "/#manufacturing",
     },
     {
-      name: "Contact",
-      path: "/#contact",
+      name: "SUSTAINABILITY",
+      path: "/#sustainability",
     },
   ],
 
   products: [
     {
-      name: "Export Carton",
-      path: "/products/export-carton",
+      name: "QUALITY",
+      path: "/#quality",
     },
     {
-      name: "Master / Duplex Box",
-      path: "/products/master-box",
+      name: "GALLERY",
+      path: "/#gallery",
     },
     {
-      name: "Garments Poly Bag",
-      path: "/products/poly-bag",
+      name: "CLIENTS",
+      path: "/#clients",
     },
     {
-      name: "Poly Roll & Film",
-      path: "/products/poly-roll",
+      name: "CONTACT",
+      path: "/#contact",
     },
   ],
 
   getStarted: [
     {
-      name: "Request a Quote",
-      path: "/contact",
+      name: "REQUEST QUOTE",
+      path: "/#contact",
     },
     {
-      name: "FAQ",
-      path: "/faq",
+      name: "EMAIL SALES",
+      path: `mailto:${contactData.email}?subject=Packaging%20Inquiry`,
     },
   ],
 

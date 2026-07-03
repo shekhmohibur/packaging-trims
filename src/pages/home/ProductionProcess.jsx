@@ -155,7 +155,7 @@ const ProductionProcess = () => {
 
           <button
             onClick={() => setActive("carton")}
-            className={`px-6 py-3 uppercase text-xs font-semibold tracking-[0.15em] transition cursor-pointer ${
+            className={`px-6 py-3 uppercase text-xs font-semibold tracking-[0.15em] transition duration-300 cursor-pointer ${
               active === "carton"
                 ? "bg-[#17352B] text-white"
                 : "border border-[#17352B] text-[#17352B] hover:bg-[#17352B] hover:text-white"
