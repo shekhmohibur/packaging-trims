@@ -7,6 +7,18 @@ const MainLayout = () => {
   const location = useLocation();
 
   useEffect(() => {
+    const hashId = location.hash.replace("#", "");
+
+    if (hashId) {
+      setTimeout(() => {
+        document.getElementById(hashId)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+      return;
+    }
+
     if (location.pathname === "/") return;
 
     const sectionId = location.pathname.replace("/", "");

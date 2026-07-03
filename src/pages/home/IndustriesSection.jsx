@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Shirt, Scissors, Package, Building2, Tags, Ship } from "lucide-react";
 
@@ -30,6 +31,8 @@ const industries = [
 ];
 
 const IndustriesSection = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <section className="bg-[#F7F2E8] py-20 lg:py-28">
       <div className="max-w-360 mx-auto px-5 lg:px-8">
@@ -58,6 +61,7 @@ const IndustriesSection = () => {
         <div className="mt-16 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-5">
           {industries.map((item, index) => {
             const Icon = item.icon;
+            const isSelected = item.active && !isHovered;
 
             return (
               <motion.div
@@ -69,6 +73,8 @@ const IndustriesSection = () => {
                   duration: 0.45,
                   delay: index * 0.08,
                 }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 className={`
                   group
                   aspect-square
@@ -81,7 +87,7 @@ const IndustriesSection = () => {
                   transition-all
                   duration-300
                   ${
-                    item.active
+                    isSelected
                       ? "bg-[#0F2D25] border-[#0F2D25]"
                       : "border-[#D9D1C6] bg-transparent hover:bg-[#17352B] hover:border-[#17352B]"
                   }
@@ -98,7 +104,7 @@ const IndustriesSection = () => {
                     transition-all
                     duration-300
                     ${
-                      item.active
+                      isSelected
                         ? "bg-white/10"
                         : "bg-[#17352B]/5 group-hover:bg-white/10"
                     }
@@ -107,7 +113,7 @@ const IndustriesSection = () => {
                   <Icon
                     size={28}
                     className={
-                      item.active
+                      isSelected
                         ? "text-[#E56B2D]"
                         : "text-[#17352B] group-hover:text-[#E56B2D]"
                     }
@@ -125,7 +131,7 @@ const IndustriesSection = () => {
                     transition-colors
                     duration-300
                     ${
-                      item.active
+                      isSelected
                         ? "text-white"
                         : "text-[#17352B] group-hover:text-white"
                     }

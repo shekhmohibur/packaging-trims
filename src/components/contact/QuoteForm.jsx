@@ -21,7 +21,7 @@ export default function QuoteForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-[#F7F2E8] rounded-2xl border border-[#E7DDCF] p-6 md:p-8 lg:p-10 shadow-sm"
+      className="rounded-2xl border border-[#E7DDCF] bg-white p-6 shadow-sm md:p-8 lg:p-10"
     >
       <div className="grid md:grid-cols-2 gap-6">
         <Input
@@ -112,13 +112,7 @@ function Label({ children }) {
   );
 }
 
-function Input({
-  label,
-  register,
-  name,
-  type = "text",
-  placeholder = "",
-}) {
+function Input({ label, register, name, type = "text", placeholder = "" }) {
   return (
     <div>
       <Label>{label}</Label>

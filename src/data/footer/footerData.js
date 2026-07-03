@@ -5,19 +5,19 @@ const footerData = {
   company: [
     {
       name: "About Us",
-      path: "/about",
+      path: "/#about",
     },
     {
       name: "Quality",
-      path: "/quality",
+      path: "/#quality",
     },
     {
       name: "Gallery",
-      path: "/gallery",
+      path: "/#gallery",
     },
     {
       name: "Contact",
-      path: "/contact",
+      path: "/#contact",
     },
   ],
 
