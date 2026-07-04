@@ -109,7 +109,7 @@ const ProductionProcess = () => {
   const steps = active === "poly" ? polySteps : cartonSteps;
 
   return (
-    <section className="bg-[#fff0d3] py-20">
+    <section className="bg-[#f8efdc] py-20">
       <div className="max-w-360 mx-auto px-5 lg:px-8">
         {/* Header */}
 

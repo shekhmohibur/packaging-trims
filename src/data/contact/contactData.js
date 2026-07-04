@@ -1,9 +1,9 @@
 const contactData = {
   title: "Request A Quote, Or Ask Us Anything About Carton And Poly Production.",
 
-  address: "Industrial Area, Dhaka, Bangladesh",
+  address: "107-108, Dhour Turag, Dhaka, Bangladesh",
 
-  phone: "+880 1XXX-XXXXXX",
+  phone: "+880 1714-094005",
 
   email: "info@soilpackaging.com",
 

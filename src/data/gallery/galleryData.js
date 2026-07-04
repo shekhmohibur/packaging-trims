@@ -1,11 +1,11 @@
-import packagingFloor from "../../assets/gallery/packaging floor.png";
-import extrusionLine from "../../assets/gallery/Extrusion Line.png";
-import polyRolls from "../../assets/gallery/polly rolls.png";
-import cartonStack from "../../assets/gallery/carton stack.png";
-import corrugator from "../../assets/gallery/corrugator.png";
-import dieCutSection from "../../assets/gallery/Die Cut Section.png";
-import warehouse from "../../assets/gallery/warehouse.png";
-import printedPoly from "../../assets/gallery/Printed Poly.png";
+import packagingFloor from "../../assets/gallery/packaging floor.webp";
+import extrusionLine from "../../assets/gallery/Extrusion Line.webp";
+import polyRolls from "../../assets/gallery/polly rolls.webp";
+import cartonStack from "../../assets/gallery/carton stack.webp";
+import corrugator from "../../assets/gallery/corrugator.webp";
+import dieCutSection from "../../assets/gallery/Die Cut Section.webp";
+import warehouse from "../../assets/gallery/warehouse.webp";
+import printedPoly from "../../assets/gallery/Printed Poly.webp";
 
 const galleryData = [
   {

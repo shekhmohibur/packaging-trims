@@ -1,12 +1,9 @@
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import contactData from "../../data/contact/contactData";
 
-const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
 export default function QuoteForm() {
   const { register, handleSubmit, reset } = useForm();
@@ -15,8 +12,7 @@ export default function QuoteForm() {
   const onSubmit = async (data) => {
     setIsSending(true);
 
-    const templateParams = {
-      from_name: data.person || data.company || "Website Inquiry",
+    const payload = {
       company_name: data.company || "N/A",
       contact_person: data.person || "N/A",
       email: data.email || "N/A",
@@ -24,55 +20,53 @@ export default function QuoteForm() {
       product: data.product || "N/A",
       quantity: data.quantity || "N/A",
       details: data.details || "N/A",
-      to_email: contactData.email,
     };
 
-    if (serviceId && templateId && publicKey) {
-      try {
-        await emailjs.send(serviceId, templateId, templateParams, {
-          publicKey,
-        });
-
-        Swal.fire({
-          icon: "success",
-          title: "Inquiry Sent",
-          text: "Thanks! Your request has been sent to the team.",
-          confirmButtonColor: "#E56B2D",
-        });
-
-        reset();
-      } catch (error) {
-        console.error("EmailJS error:", error);
-        Swal.fire({
-          icon: "error",
-          title: "Couldn't Send Email",
-          text: "Please try again or email us directly at info@soilpackaging.com.",
-          confirmButtonColor: "#E56B2D",
-        });
-      } finally {
-        setIsSending(false);
-      }
+    if (!apiEndpoint) {
+      Swal.fire({
+        icon: "error",
+        title: "Configuration Error",
+        text: "Email service is not configured. Please try again later.",
+        confirmButtonColor: "#E56B2D",
+      });
+      setIsSending(false);
       return;
     }
 
-    const subject = encodeURIComponent(
-      `Packaging Inquiry from ${data.company || "Website"}`,
-    );
-    const body = encodeURIComponent(
-      `Hello Soil Packaging Team,\n\nI would like to discuss a packaging requirement.\n\nCompany: ${data.company || "N/A"}\nContact Person: ${data.person || "N/A"}\nEmail: ${data.email || "N/A"}\nPhone: ${data.phone || "N/A"}\nProduct Needed: ${data.product || "N/A"}\nEstimated Quantity: ${data.quantity || "N/A"}\nProject Details:\n${data.details || "N/A"}`,
-    );
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    window.location.href = `mailto:${contactData.email}?subject=${subject}&body=${body}`;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    Swal.fire({
-      icon: "success",
-      title: "Opening Your Mail App",
-      text: "Your inquiry has been prepared for sending.",
-      confirmButtonColor: "#E56B2D",
-    });
+      await response.json();
 
-    reset();
-    setIsSending(false);
+      Swal.fire({
+        icon: "success",
+        title: "Inquiry Sent",
+        text: "Thanks! Your request has been sent to the team.",
+        confirmButtonColor: "#E56B2D",
+      });
+
+      reset();
+    } catch (error) {
+      console.error("Error sending quote:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Couldn't Send Inquiry",
+        text: "Please try again or email us directly at info@soilpackaging.com.",
+        confirmButtonColor: "#E56B2D",
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (

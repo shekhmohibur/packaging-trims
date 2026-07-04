@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
-import useAuth from "../../hooks/useAuth";
 import logo from "../../assets/logo.png";
 
 const navItems = [
@@ -17,7 +16,6 @@ const navItems = [
 ];
 
 const Navbar = () => {
-  const { user, logoutUser } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,28 +28,33 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       setSticky(window.scrollY > 8);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
-  useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        threshold: 0.45,
-        rootMargin: "-80px 0px -40% 0px",
-      },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+      const sections = document.querySelectorAll("section[id]");
+      const offset = 140;
+      let currentId = "about";
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const distance = Math.abs(rect.top - offset);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          currentId = section.id;
+        }
+      });
+
+      setActiveSection(currentId);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -95,12 +98,30 @@ const Navbar = () => {
     setMobileOpen(false);
   };
 
+  const handleLogoClick = () => {
+    navigate("/");
+    setMobileOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const renderNavItems = (mobile = false) =>
     navItems.map((item) => {
       const active = activeSection === item.id;
+      const ListItem = mobile ? motion.li : "li";
+      const itemVariants = mobile
+        ? {
+            hidden: { opacity: 0, x: -20 },
+            visible: { opacity: 1, x: 0 },
+            exit: { opacity: 0, x: -20 },
+          }
+        : undefined;
 
       return (
-        <li key={item.id}>
+        <ListItem
+          key={item.id}
+          variants={mobile ? itemVariants : undefined}
+          className={mobile ? undefined : undefined}
+        >
           <button
             onClick={() => scrollToSection(item.id)}
             className={`group relative flex cursor-pointer items-center ${
@@ -134,7 +155,7 @@ const Navbar = () => {
               </span>
             )}
           </button>
-        </li>
+        </ListItem>
       );
     });
 
@@ -145,14 +166,14 @@ const Navbar = () => {
           sticky ? "bg-[#F5F2EA]/95 shadow-md backdrop-blur-sm" : "bg-[#F5F2EA]"
         }`}
       >
-        <div className="mx-auto flex h-20 w-full max-w-[1440px] items-center justify-between px-5 sm:px-6 lg:px-8 xl:px-10">
+        <div className="mx-auto flex h-20 w-full max-w-360 items-center justify-between px-5 sm:px-6 lg:px-8 xl:px-10">
           {/* Logo */}
           <button
-            onClick={scrollTop}
-            aria-label="Go to top"
+            onClick={handleLogoClick}
+            aria-label="Go to home"
             className="flex shrink-0 cursor-pointer items-center gap-3"
           >
-            <div className="flex h-11 w-11 items-center justify-center bg-[#17352B]">
+            <div className="flex h-11 w-11 items-center justify-center bg-[#17352B] rounded-sm">
               <img
                 src={logo}
                 alt="Soil Packaging"
@@ -183,34 +204,13 @@ const Navbar = () => {
           {/* Right Side CTA & Mobile Toggle */}
           <div className="flex shrink-0 items-center gap-4">
             {/* Desktop CTA */}
-            <div className="hidden items-center gap-4 lg:flex">
-              {user ? (
-                <>
-                  <Link
-                    to="/dashboard"
-                    className="text-xs font-medium uppercase tracking-[0.16em] text-[#17352B] transition hover:text-[#E66A2C]"
-                    style={{ fontFamily: "IBM Plex Mono" }}
-                  >
-                    Dashboard
-                  </Link>
-                  <button
-                    onClick={logoutUser}
-                    className="bg-[#E66A2C] px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-[#d95c20]"
-                    style={{ fontFamily: "IBM Plex Mono" }}
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => scrollToSection("contact")}
-                  className="bg-[#E66A2C] px-6 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 hover:bg-[#d95c20]"
-                  style={{ fontFamily: "IBM Plex Mono" }}
-                >
-                  REQUEST QUOTE
-                </button>
-              )}
-            </div>
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="hidden bg-[#E66A2C] px-6 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 hover:bg-[#d95c20] rounded-sm lg:block"
+              style={{ fontFamily: "IBM Plex Mono" }}
+            >
+              REQUEST QUOTE
+            </button>
 
             {/* Mobile Menu Toggle */}
             <button
@@ -228,41 +228,60 @@ const Navbar = () => {
           </div>
         </div>
 
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {mobileOpen && (
             <>
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.24, ease: "easeOut" }}
+                initial={{ opacity: 0, y: -20, scaleY: 0.95 }}
+                animate={{ opacity: 1, y: 0, scaleY: 1 }}
+                exit={{ opacity: 0, y: -20, scaleY: 0.95 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                style={{ originY: 0 }}
                 className="absolute left-0 top-20 w-full bg-[#F5F2EA] shadow-xl lg:hidden"
               >
                 <nav className="flex flex-col space-y-4 px-6 py-6">
-                  <ul className="space-y-2">{renderNavItems(true)}</ul>
+                  <motion.ul
+                    className="space-y-2"
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: {
+                          staggerChildren: 0.08,
+                          delayChildren: 0.1,
+                        },
+                      },
+                      exit: {
+                        opacity: 0,
+                        transition: {
+                          staggerChildren: 0.05,
+                        },
+                      },
+                    }}
+                  >
+                    {renderNavItems(true)}
+                  </motion.ul>
 
-                  <div className="mt-4 border-t border-[#DDD5C8] pt-6">
-                    {user ? (
-                      <button
-                        onClick={() => {
-                          logoutUser();
-                          setMobileOpen(false);
-                        }}
-                        className="w-full bg-[#E66A2C] py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#D95C20]"
-                        style={{ fontFamily: "IBM Plex Mono" }}
-                      >
-                        Logout
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => scrollToSection("contact")}
-                        className="w-full bg-[#17352B] py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#10261E]"
-                        style={{ fontFamily: "IBM Plex Mono" }}
-                      >
-                        REQUEST QUOTE
-                      </button>
-                    )}
-                  </div>
+                  <motion.div
+                    className="mt-4 border-t border-[#DDD5C8] pt-6"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.35 }}
+                  >
+                    <button
+                      onClick={() => {
+                        scrollToSection("contact");
+                        setMobileOpen(false);
+                      }}
+                      className="w-full bg-[#E66A2C] py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#d95c20] rounded-sm"
+                      style={{ fontFamily: "IBM Plex Mono" }}
+                    >
+                      REQUEST QUOTE
+                    </button>
+                  </motion.div>
                 </nav>
               </motion.div>
 
@@ -270,7 +289,7 @@ const Navbar = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="fixed inset-0 top-20 z-40 bg-black/20 lg:hidden"
                 onClick={() => setMobileOpen(false)}
               />

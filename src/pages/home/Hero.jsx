@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import HeroFeatures from "../../data/hero/HeroData";
-import heroImage from "../../assets/factory.webp";
+import heroImage from "../../assets/heroBg.jpeg";
 
 const containerVariants = {
   hidden: {},
