@@ -46,7 +46,7 @@ const Home = () => {
         <TrustedClients />
       </section>
 
-      <section id="faq" style={{ scrollMarginTop: "100px" }}>
+      <section id="clients" style={{ scrollMarginTop: "100px" }}>
         <FAQSection />
       </section>
 

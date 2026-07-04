@@ -206,7 +206,7 @@ const Navbar = () => {
             {/* Desktop CTA */}
             <button
               onClick={() => scrollToSection("contact")}
-              className="hidden bg-[#E66A2C] px-6 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 hover:bg-[#d95c20] rounded-sm lg:block"
+              className="hidden bg-[#E66A2C] px-6 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 hover:bg-[#d95c20] lg:block"
               style={{ fontFamily: "IBM Plex Mono" }}
             >
               REQUEST QUOTE
@@ -276,7 +276,7 @@ const Navbar = () => {
                         scrollToSection("contact");
                         setMobileOpen(false);
                       }}
-                      className="w-full bg-[#E66A2C] py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#d95c20] rounded-sm"
+                      className="w-full bg-[#E66A2C] py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#d95c20]"
                       style={{ fontFamily: "IBM Plex Mono" }}
                     >
                       REQUEST QUOTE

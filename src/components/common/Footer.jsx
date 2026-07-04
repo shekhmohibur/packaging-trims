@@ -12,7 +12,7 @@ const Footer = () => {
       return (
         <a
           href={item.path}
-          className="block text-[#D8DDD8] transition hover:text-white"
+          className="text-[#D8DDD8] transition hover:text-white"
         >
           {item.name}
         </a>
@@ -22,7 +22,7 @@ const Footer = () => {
     return (
       <Link
         to={item.path}
-        className="block text-[#D8DDD8] transition hover:text-white"
+        className="text-[#D8DDD8] transition hover:text-white"
       >
         {item.name}
       </Link>
@@ -32,7 +32,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#0F2D25] text-white">
       <div className="mx-auto max-w-360 px-5 py-16 lg:px-8">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-5">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -55,8 +55,8 @@ const Footer = () => {
               {footerData.description}
             </p>
           </motion.div>
-
-          <motion.div
+          <div className="lg:col-span-2 grid grid-cols-2 gap-12">
+                      <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -89,21 +89,27 @@ const Footer = () => {
               ))}
             </div>
           </motion.div>
-
+          </div>
           <motion.div
+          className="lg:col-span-2"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             viewport={{ once: false }}
           >
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#E56B2D]">
-              Get in Touch
-            </h3>
-
-            <div className="mt-6 space-y-4">
-              {footerData.getStarted.map((item) => (
-                <div key={item.name}>{renderLink(item)}</div>
-              ))}
+            {/* Google Map */}
+            <div className=" overflow-hidden border border-white/10 shadow-lg">
+              <iframe
+                title="Soil Packaging & Trims Ltd."
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233486.24103833013!2d90.24646424831136!3d23.881727009032662!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c3513c4314bf%3A0xf8a0f7f092a46e93!2sSoil%20Packaging%20%26%20Trims%20Ltd.!5e0!3m2!1sen!2sus!4v1783126411639!5m2!1sen!2sus"
+                width="100%"
+                height="220"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="w-full"
+              />
             </div>
           </motion.div>
         </div>
